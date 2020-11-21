@@ -19,7 +19,7 @@ class TransmissionType(Enum):
     SIGFOX = 'SIGFOX'
 
 
-url = ''
+url = 'localhost:8080'
 
 
 class Sensor:
