@@ -1,7 +1,7 @@
 from enum import Enum
 from time import time
 import requests
-from event import Event
+from .event import Event
 
 
 class Location(Enum):
