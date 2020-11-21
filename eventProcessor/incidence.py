@@ -12,4 +12,3 @@ class Incident(Enum):
     ZONE_INHIBITED = "Zona Inhibida"
     FIREWORKS = "Fuegos Artificiales"
     HIGH_POLLUTION = "Alta Contaminación"
-    BURGLARY = "Robo"

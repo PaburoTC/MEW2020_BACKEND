@@ -1,5 +1,5 @@
-from queue import SimpleQueue, Empty
-import requests
+from queue import Queue, Empty
+from .models import NotableIncidents, ExternalIncidents, Installation
 from .sensor import SensorType, TransmissionType
 from .incidence import Incident
 from time import time
@@ -36,27 +36,27 @@ event_thresholds = {
 class Processor:
 
     def __init__(self):
-        self.event_queue = SimpleQueue()
+        self.event_queue = Queue(1000000)
         self.aggregated_events = {name: set() for name in Incident.__members__.values()}
-        self.processed_events = []
-        self.logged_incidents = []
 
     def add_event(self, event):
         self.event_queue.put(event)
 
     def collect_events(self):
+        last_time_processed = time()
         while True:
             try:
                 e = self.event_queue.get(block=True, timeout=1)
                 location = get_location(e)
                 incidences = classify_event(e)
-                if incidences[0] == Incident.BURGLARY:
-                    self.processed_events.append((location, e))
-                else:
-                    for i in incidences:
-                        self.aggregated_events[i].add((location, e))
+                for i in incidences:
+                    self.aggregated_events[i].add((location, e))
             except Empty:
+                pass
+
+            if time() - last_time_processed >= 1:
                 self.process_events()
+                last_time_processed = time()
 
     def process_events(self):
         for incident_type in Incident.__members__.values():
@@ -68,27 +68,21 @@ class Processor:
                     to_remove.append(event)
                 if loc not in locations:
                     locations[loc] = []
-                locations[loc].append(event)
+                locations[loc[1]].append(event)
 
             for loc, events in locations.items():
                 if len(events) > event_thresholds[incident_type]:
-                    self.logged_incidents.append((loc, incident_type))
+                    ExternalIncidents(postal_code=loc, timestamp=events[0].timestamp, type=incident_type).save()
                 else:
                     for event in events:
-                        self.processed_events.append((loc, incident_type, str(event.installation) + ":" + str(event.device)))
-
+                        NotableIncidents(installation=event.installation, timestamp=event.timestamp, type=incident_type).save()
             for e in to_remove:
                 self.aggregated_events[incident_type].discard(e)
 
-    def get_processed_events(self):
-        pass
-
-    def get_logged_events(self):
-        pass
-
 
 def get_location(event):
-    pass
+    loc = Installation.objects.get(installation=event.installation, device=event.device)
+    return loc.direction, loc.postal_code
 
 
 def classify_event(event):

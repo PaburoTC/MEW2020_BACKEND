@@ -2,6 +2,8 @@ from enum import Enum
 from time import time
 import requests
 from .event import Event
+from random import randint
+from time import sleep
 
 
 class SensorType(Enum):
@@ -33,12 +35,20 @@ class Sensor:
         self.value = 0
         self.transmission_medium = TransmissionType.ADSL
 
-    def send_message(self):
+    def send_message(self, depth=0):
         event = Event(self, self.value, time())
         data = event.generateJSON()
         response = requests.post(url + '/postEvent', data)
-        if response.status_code != 200:
-            print('AAAAAAAAAAAAAAA')
+        if response.status_code != 200 and depth < 50:
+            self.send_message(depth + 1)
+        else:
+            print('AAAAAAAA')
+
+    def run(self):
+        while True:
+            sleep(120 if randint(0, 10) < 8 else randint(0, 120))
+            self.value = randint(0, 100)
+            self.send_message()
 
 
 class ShockSensor(Sensor):
