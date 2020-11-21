@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     path('postEvent', views.post_event),
+    path('login', views.login)
 ]
