@@ -19,7 +19,7 @@ class Processor():
 processor = Processor()
 
 
-def postEvent(request):
+def post_event(request):
     if request.method == 'POST':
         event = json.loads(request.body)
 
