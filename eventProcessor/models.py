@@ -16,13 +16,23 @@ class Client(models.Model):
     UniqueConstraint(fields=['user'], name='unique_sensor')
 
 
-class Event(models.Model):
-    pass
+class Installation(models.Model):
+    installation = models.IntegerField()
+    postalCode = models.IntegerField()
+    direction = models.CharField(max_length=200)
+
+
+class NotableIncidents(models.Model):
+    installation = models.ForeignKey('Installation', on_delete=models.RESTRICT, name='sensor')
+    type = models.CharField(max_length=30)
+
+
+class ExternalIncidents(models.Model):
+    installation = models.ForeignKey('Installation', on_delete=models.RESTRICT, name='sensor')
+    type = models.CharField(max_length=30)
 
 
 class Sensor(models.Model):
     id = models.IntegerField(primary_key=True)
-    installation = models.IntegerField()
-    postalCode = models.IntegerField(default=None)
-    direction = models.CharField(max_length=200, default=None)
+    installation = models.ForeignKey('Installation', on_delete=models.RESTRICT, name='sensor')
     UniqueConstraint(fields=['id', 'installation'], name='unique_sensor')
