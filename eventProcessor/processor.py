@@ -1,18 +1,7 @@
 from queue import SimpleQueue
 import requests
-from .sensor import SensorType
-
-
-# Shock: [10,20) fireworks [20,60) storm [60,100] Teremoto
-# Smoke: [70,100] Incendio
-# Water: [40,100] Inundación
-# Inhibition: [10,100] Zona Inhibida
-# Air: [60,100] Alta contaminación
-
-# self.battery: Corte Red Eléctrica
-# self.medium != ADSL: Corte de Fibra de Internet
-#            == SIGFOX: Zona sin Cobertura Móvil
-
+from .sensor import SensorType, TransmissionType
+from .incidence import Incident
 
 class Processor:
 
@@ -26,7 +15,8 @@ class Processor:
     def process_events(self):
         while True:
             next = self.eventQueue.get(block=True)
-            if not self.suspect_event(next):
+            incidences = self.suspect_event(next) # Para hacer output ig
+            if not incidences:
                 pass
             else:
                 data = next.generateJSON()
@@ -35,11 +25,29 @@ class Processor:
                     print('AAAAAAAAAAAAAAA')
 
     def suspect_event(self, event):
+        incidences = []
         if event.type == SensorType.SHOCK:
-            if
-        elif event.type == SensorType.SMOKE:
-        elif event.type == SensorType.WATER:
-        elif event.type == SensorType.INHIBITION:
-        elif event.type == SensorType.AIR:
-            return false
+            if event.value in range(10, 20):
+                incidences.append(Incident.fireworks)
+            elif event.value in range(20, 60):
+                incidences.append(Incident.storm)
+            elif event.value in range(60, 101):
+                incidences.append(Incident.earthquake)
+        elif event.type == SensorType.SMOKE and event.value in range(70, 101):
+            incidences.append(Incident.fire)
+        elif event.type == SensorType.WATER and event.value in range(40, 101):
+            incidences.append(Incident.flood)
+        elif event.type == SensorType.INHIBITION and event.value in range(10,101):
+            incidences.append(Incident.zone_inhibited)
+        elif event.type == SensorType.AIR and event.value in range(60, 101):
+            incidences.append(Incident.high_pollution)
+        
+        if event.battery:
+            incidences.append(Incident.power_out)
+        if event.medium != TransmissionType.ADSL:
+            incidences.append(Incident.fiber_cut)
+        elif event.medium == TransmissionType.SIGFOX:
+            incidences.append(Incident.no_signal)
+        
+        return incidences 
 

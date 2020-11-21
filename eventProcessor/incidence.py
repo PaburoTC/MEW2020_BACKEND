@@ -2,14 +2,14 @@ from enum import Enum, auto
 
 
 class Incident(Enum):
-    earthquake = auto()
-    fire = auto()
-    storm = auto()
-    flood = auto()
-    power_out = auto()
-    fiber_cut = auto()
-    no_signal = auto()
-    zone_inhibited = auto()
-    fireworks = auto()
-    high_pollution = auto()
-    burglary = auto()
+    earthquake = "Terremoto"
+    fire = "Incendio"
+    storm = "Tormenta"
+    flood = "Inundación"
+    power_out = "Corte Red Eléctrica"
+    fiber_cut = "Corte de Fibra de Internet"
+    no_signal = "Zona sin Cobertura Móvil"
+    zone_inhibited = "Zona Inhibida"
+    fireworks = "Fuegos Artificiales"
+    high_pollution = "Alta Contaminación"
+    burglary = "Robo"
