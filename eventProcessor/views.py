@@ -47,7 +47,7 @@ def login(request):
 
         return JsonResponse({"error": "Huvo un error"}, status=500)
 
-
+@csrf_exempt
 def post_event(request):
     if request.method == 'POST':
         event = json.loads(request.body)
