@@ -19,7 +19,7 @@ event_timeouts = {
     Incident.HIGH_POLLUTION: 60,
 }
 
-event_thersholds = {
+event_thresholds = {
     Incident.EARTHQUAKE: 5,
     Incident.FIRE: 1,
     Incident.STORM: 2,
@@ -71,7 +71,7 @@ class Processor:
                 locations[loc].append(event)
 
             for loc, events in locations.items():
-                if len(events) > event_thersholds[incident_type]:
+                if len(events) > event_thresholds[incident_type]:
                     self.logged_incidents.append((loc, incident_type))
                 else:
                     for event in events:
