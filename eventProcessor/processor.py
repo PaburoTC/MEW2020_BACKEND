@@ -80,6 +80,12 @@ class Processor:
             for e in to_remove:
                 self.aggregated_events[incident_type].discard(e)
 
+    def get_processed_events(self):
+        pass
+
+    def get_logged_events(self):
+        pass
+
 
 def get_location(event):
     pass
