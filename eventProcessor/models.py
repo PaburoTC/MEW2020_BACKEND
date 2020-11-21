@@ -61,3 +61,7 @@ class Sensor(models.Model):
     postal_code = models.ForeignKey('PostalCode', on_delete=models.RESTRICT, name='sensors')
     direction = models.CharField(max_length=200, default=None)
     UniqueConstraint(fields=['id', 'installation'], name='unique_sensor')
+
+
+class Example(models.Model):
+    pass

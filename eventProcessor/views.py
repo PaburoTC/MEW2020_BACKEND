@@ -60,7 +60,7 @@ def post_event(request):
 
 
 def get_incidents(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         result = []
         for incident in ExternalIncidents.objects.all():
             result.append(incident.serialize())
