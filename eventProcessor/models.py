@@ -33,12 +33,26 @@ class NotableIncidents(models.Model):
     type = models.CharField(max_length=30)
     UniqueConstraint(fields=['installation', 'timestamp'], name="unique_notable_incidents")
 
+    def serialize(self):
+        return {
+            "installation": self.installation,
+            "timestamp": self.timestamp,
+            "type": self.type
+        }
+
 
 class ExternalIncidents(models.Model):
     postal_code = models.ForeignKey('PostalCode', on_delete=models.RESTRICT, name='external_incidents', primary_key=True)
     timestamp = models.IntegerField()
     type = models.CharField(max_length=30)
     UniqueConstraint(fields=['postal_code', 'timestamp'], name="unique_external_incidents")
+
+    def serialize(self):
+        return {
+            "installation": self.postal_code,
+            "timestamp": self.timestamp,
+            "type": self.type
+        }
 
 
 class Sensor(models.Model):
@@ -47,3 +61,7 @@ class Sensor(models.Model):
     postal_code = models.ForeignKey('PostalCode', on_delete=models.RESTRICT, name='sensors')
     direction = models.CharField(max_length=200, default=None)
     UniqueConstraint(fields=['id', 'installation'], name='unique_sensor')
+
+
+class Example(models.Model):
+    pass
