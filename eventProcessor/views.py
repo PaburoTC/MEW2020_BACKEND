@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 import datetime
 
-from .models import Client, SessionID
+from .models import Client, SessionID, ExternalIncidents, NotableIncidents
 from .processor import Processor
 from django.views.decorators.csrf import csrf_exempt
 
@@ -57,6 +57,19 @@ def post_event(request):
         return
 
     return JsonResponse({'status': 404})
+
+
+def get_incidents(request):
+    if request.method == 'POST':
+        result = []
+        for incident in ExternalIncidents.objects.all():
+            result.append(incident.serialize())
+
+        for incident in NotableIncidents.objects.all():
+            result.append(incident.serialize())
+
+        return JsonResponse(result)
+        
 
 # Shock: 10-20 fireworks 20-60 storm (60,100] earthquake
 # Smoke: 70-100 fire
