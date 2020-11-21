@@ -1,9 +1,18 @@
 from enum import Enum
 from time import time
 import requests
-from .event import Event
-from random import randint
-from time import sleep
+from event import Event
+
+
+class Location(Enum):
+    LIVING_ROOM = 'SALON',
+    WINDOW = 'VENTANA',
+    DOOR = 'PUERTA',
+    KITCHEN = 'COCINA',
+    BEDROOM = 'HABITACION',
+    GARAGE = 'GARAJE',
+    BASEMENT = 'SOTANO',
+    BATHROOM = 'BAÑO',
 
 
 class SensorType(Enum):
@@ -26,7 +35,8 @@ url = 'localhost:8080'
 
 class Sensor:
 
-    def __init__(self, installation, ID, location):
+    def __init__(self, country, installation, ID, location):
+        self.country = country
         self.installation = installation
         self.ID = ID
         self.location = location
@@ -44,43 +54,37 @@ class Sensor:
         else:
             print('AAAAAAAA')
 
-    def run(self):
-        while True:
-            sleep(120 if randint(0, 10) < 8 else randint(0, 120))
-            self.value = randint(0, 100)
-            self.send_message()
-
 
 class ShockSensor(Sensor):
 
-    def __init__(self, installation, ID, location):
-        Sensor.__init__(self, installation, ID, location)
+    def __init__(self, country, installation, ID, location):
+        Sensor.__init__(self, country, installation, ID, location)
         self.type = SensorType.SHOCK
 
 
 class SmokeSensor(Sensor):
 
-    def __init__(self, installation, ID, location):
-        Sensor.__init__(self, installation, ID, location)
+    def __init__(self, country, installation, ID, location):
+        Sensor.__init__(self, country, installation, ID, location)
         self.type = SensorType.SMOKE
 
 
 class WaterSensor(Sensor):
 
-    def __init__(self, installation, ID, location):
-        Sensor.__init__(self, installation, ID, location)
+    def __init__(self, country, installation, ID, location):
+        Sensor.__init__(self, country, installation, ID, location)
         self.type = SensorType.WATER
 
 
 class InhibitionSensor(Sensor):
 
-    def __init__(self, installation, ID, location):
-        Sensor.__init__(self, installation, ID, location)
+    def __init__(self, country, installation, ID, location):
+        Sensor.__init__(self, country, installation, ID, location)
         self.type = SensorType.INHIBITION
 
 
 class AirSensor(Sensor):
 
-    def __init__(self, installation, ID, location):
-        Sensor.__init__(self, installation, ID, location)
+    def __init__(self, country, installation, ID, location):
+        Sensor.__init__(self, country, installation, ID, location)
         self.type = SensorType.AIR

@@ -7,29 +7,29 @@ from time import time
 url = 'localhost:8080'
 
 event_timeouts = {
-    Incident.EARTHQUAKE: 20,
-    Incident.FIRE: 60,
-    Incident.STORM: 5,
-    Incident.FLOOD: 60,
-    Incident.POWER_OUT: 5,
-    Incident.FIBER_CUT: 5,
-    Incident.NO_SIGNAL: 5,
-    Incident.ZONE_INHIBITED: 5,
-    Incident.FIREWORKS: 5,
-    Incident.HIGH_POLLUTION: 60,
+    Incident.EARTHQUAKE.name: 20,
+    Incident.FIRE.name: 60,
+    Incident.STORM.name: 5,
+    Incident.FLOOD.name: 60,
+    Incident.POWER_OUT.name: 5,
+    Incident.FIBER_CUT.name: 5,
+    Incident.NO_SIGNAL.name: 5,
+    Incident.ZONE_INHIBITED.name: 5,
+    Incident.FIREWORKS.name: 5,
+    Incident.HIGH_POLLUTION.name: 60,
 }
 
 event_thresholds = {
-    Incident.EARTHQUAKE: 5,
-    Incident.FIRE: 1,
-    Incident.STORM: 2,
-    Incident.FLOOD: 2,
-    Incident.POWER_OUT: 2,
-    Incident.FIBER_CUT: 2,
-    Incident.NO_SIGNAL: 2,
-    Incident.ZONE_INHIBITED: 2,
-    Incident.FIREWORKS: 2,
-    Incident.HIGH_POLLUTION: 2,
+    Incident.EARTHQUAKE.name: 5,
+    Incident.FIRE.name: 1,
+    Incident.STORM.name: 2,
+    Incident.FLOOD.name: 2,
+    Incident.POWER_OUT.name: 2,
+    Incident.FIBER_CUT.name: 2,
+    Incident.NO_SIGNAL.name: 2,
+    Incident.ZONE_INHIBITED.name: 2,
+    Incident.FIREWORKS.name: 2,
+    Incident.HIGH_POLLUTION.name: 2,
 }
 
 
@@ -59,7 +59,7 @@ class Processor:
                 last_time_processed = time()
 
     def process_events(self):
-        for incident_type in Incident.__members__.values():
+        for incident_type in Incident.__members__.keys():
             locations = {}
             current_time = time()
             to_remove = []

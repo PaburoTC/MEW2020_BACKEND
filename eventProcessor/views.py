@@ -52,7 +52,7 @@ def post_event(request):
     if request.method == 'POST':
         event = json.loads(request.body)
 
-        processor.addEvent(event)
+        processor.add_event(event)
 
         return
 
